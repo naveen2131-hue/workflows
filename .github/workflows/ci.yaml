@@ -1,9 +1,9 @@
 name: Defectdojo - endorlabs
 
 on:
-  # push:
-  #   branches:
-  #     - "**"
+  push:
+    branches:
+      - "**"
 
   schedule:
     - cron: '25 18 * * *'
