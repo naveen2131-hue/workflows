@@ -1,0 +1,89 @@
+name: Defectdojo - endorlabs
+
+on:
+  push:
+    branches:
+      - "master"
+
+jobs:
+  endorlabs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Product id
+        id: get_product
+        run: |
+          PROD_ID=$(curl -s -H "Authorization: Token d0cfb7dc99b1f0cc53675c7839e06fb3288ccd04" \
+          http://localhost:8080/api/v2/products/?name="XYZ" \
+          | jq -r '.results[0].id')
+
+          echo "PROD_ID"=$prod_id >> $GITHUB_ENV
+          echo "Product ID: $PROD_ID" 
+
+          if [[ "$PROD_ID" =~ ^[0-9]+$ ]]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Product name
+        if: ${{ steps.get_product.exists == 'false' }}
+        run: |
+          curl -X POST "http://localhost:8080/api/v2/products/" \
+            -H "Authorization: Token d0cfb7dc99b1f0cc53675c7839e06fb3288ccd04" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "business_criticality": "very high",
+              "platform": "web service",
+              "lifecycle": "construction",
+              "origin": "third party library",
+              "tags": ["string"],
+              "name": "XYZ",
+              "description": "XYZ",
+              "internet_accessible": true,
+              "enable_product_tag_inheritance": true,
+              "enable_full_risk_acceptance": true,
+              "disable_sla_breach_notifications": true,
+              "prod_type": 1,
+              "product_manager": 1,
+              "technical_contact": 1,
+              "team_manager": 1,
+              "sla_configuration": 1,
+              "regulations": [1]
+            }'
+
+      - name: setup python
+        uses: actions/setup-python@v6 
+        with:
+          python-version: '3.10' 
+
+      - name: convert endorlabs json into dd json
+        run: |
+          python3 endor_to_dd.py dd.json defectdojo.json
+
+      - name: upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dd
+          path: defectdojo.json
+
+
+      - name: Endor labs Upload to DD
+        run: |
+          curl -X POST "http://localhost:8080/api/v2/reimport-scan/" \
+            -H "Authorization: Token d0cfb7dc99b1f0cc53675c7839e06fb3288ccd04" \
+            -H "Accept: application/json" \
+            -H "Content-Type: multipart/form-data" \
+            -F "scan_type=Generic Findings Import" \
+            -F "file=@my_defectdojo.json" \
+            -F "engagement_name=test" \
+            -F "active=true" \
+            -F "verified=true" \
+            -F "product_name=XYZ" \
+            -F "minimum_severity=Low" \
+            -F ""auto_create_context=true"
+            -F "close_old_findings=true"
+
