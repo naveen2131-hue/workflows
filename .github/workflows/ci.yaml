@@ -20,6 +20,9 @@ jobs:
 
       - name: Print timezone
         run: date +"%Y-%m-%d %H:%M:%S %Z %z"
+
+      - name: Print GitHub Actions env
+        run: env
       
       - name: setup python
         uses: actions/setup-python@v6 
