@@ -6,7 +6,7 @@ on:
       - "**"
 
   schedule:
-    - cron: '24 17 * * *'
+    - cron: '56 17 * * *'
 
       
 jobs:
