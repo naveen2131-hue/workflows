@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - "**"
+
+  schedule:
+    - cron: '24 17 * * *'
+
       
 jobs:
   endorlabs:
