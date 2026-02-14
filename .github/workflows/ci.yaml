@@ -1,9 +1,12 @@
 name: Defectdojo - endorlabs
 
 on:
+  push:
+    branches:
+      - "**"
 
   schedule:
-    - cron: '18 23 * * *'
+    - cron: '24 17 * * *'
 
       
 jobs:
@@ -14,6 +17,9 @@ jobs:
       
       - name: checkout code
         uses: actions/checkout@v6
+
+      - name: Print timezone
+        run: date +"%Y-%m-%d %H:%M:%S %Z %z"
       
       - name: setup python
         uses: actions/setup-python@v6 
