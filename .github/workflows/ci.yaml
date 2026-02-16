@@ -65,6 +65,24 @@ jobs:
         with:
           python-version: '3.10' 
 
+      - name: setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install Endorctl
+        run: | 
+          npm install -g endorctl
+
+      - name: Endorctl to Download the Json report
+        run: |
+          endorctl api list -r Finding \
+            -n abcfitness.trainerize \
+            --filter "spec.finding_categories contains FINDING_CATEGORY_SCA" \
+            --list-all \
+            > dd.json
+
       - name: convert endorlabs json into dd json
         run: |
           python3 endor_to_dd.py dd.json defectdojo.json
