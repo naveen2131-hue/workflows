@@ -1,4 +1,4 @@
-name: Defectdojo - endorlabs
+name: Defectdojo - Wiz
 
 on:
 
@@ -56,6 +56,19 @@ jobs:
               "sla_configuration": 1,
               "regulations": [1]
             }'
+
+      - name: Get Token
+        id: get_token
+        run: |
+          RESPONSE=$(curl -sS -X POST "${{ secrets.TOKEN_URL }}" \
+            -H "Content-Type: application/x-www-form-urlencoded" \
+            --data-urlencode "grant_type=client_credentials" \
+            --data-urlencode "audience=wiz-api" \
+            --data-urlencode "client_id=${{ secrets.CLIENT_ID }}" \
+            --data-urlencode "client_secret=${{ secrets.CLIENT_SECRET }}")
+ 
+          ACCESS_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
+          echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
 
       - name: Query Wiz Issues
         env:
