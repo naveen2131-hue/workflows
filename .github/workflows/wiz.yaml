@@ -8,6 +8,7 @@ on:
   # schedule:
   #   - cron: '0 8 * * *' 
 
+      
 jobs:
   endorlabs:
     runs-on: ubuntu-latest
@@ -139,62 +140,41 @@ jobs:
 
           jq -r '
           [
-          "Created At",
-          "Title",
-          "Severity",
-          "Status",
-          "Description",
-          "Resource Type",
-          "Project Names",
-          "Resolved Time",
-          "Resolution",
-          "Resource Name",
-          "Resource Region",
-          "Resource Status",
-          "Resource Platform",
-          "Resource OS",
-          "Issue ID",
-          "Ticket URLs",
-          "Note",
-          "Due At",
-          "Remediation Recommendation",
-          "Subscription Name",
-          "Wiz URL",
-          "Cloud Provider URL",
-          "Provider ID",
-          "Risks",
-          "Threats",
-          "Status Changed At",
-          "Updated At",
-          "Reopened At"
+          "Created At","Title","Severity","Status","Description",
+          "Resource Type","Project Names","Resolved Time","Resolution",
+          "Resource Name","Resource Region","Resource Status",
+          "Resource Platform","Resource OS","Issue ID","Ticket URLs",
+          "Note","Due At","Remediation Recommendation","Subscription Name",
+          "Wiz URL","Cloud Provider URL","Provider ID","Risks","Threats",
+          "Status Changed At","Updated At","Reopened At"
           ],
-          (.data.issues.nodes[] |
+          (.data.issues.nodes[]? |
           [
           .createdAt,
-          .sourceRules[0].name,
+          .sourceRules[0]?.name,
           .severity,
           .status,
           .description,
-          .entity.type,
-          (.projects | map(.name) | join(";")),
+          .entity?.type,
+          (.projects? | map(.name) | join(";")),
           .resolvedAt,
           .resolutionReason,
-          .entity.name,
-          .entity.properties.region,
-          .entity.properties.status,
-          .entity.properties.cloudPlatform,
+          .entity?.name,
+          .entity?.properties?.region,
+          .entity?.properties?.status,
+          .entity?.properties?.cloudPlatform,
           "",
           .id,
-          (.serviceTickets | tostring),
+          (.serviceTickets // "" | tostring),
           .resolutionNote,
           .dueAt,
-          .sourceRules[0].description,
-          .entity.properties.subscriptionExternalId,
+          .sourceRules[0]?.description,
+          .entity?.properties?.subscriptionExternalId,
           .url,
-          .entity.properties.cloudProviderURL,
-          .entity.providerUniqueId,
-          (.sourceRules[0].risks | join(";")),
-          (.sourceRules[0].threats | join(";")),
+          .entity?.properties?.cloudProviderURL,
+          .entity?.providerUniqueId,
+          (.sourceRules[0]?.risks // [] | join(";")),
+          (.sourceRules[0]?.threats // [] | join(";")),
           .statusChangedAt,
           .updatedAt,
           .reopenedAt
