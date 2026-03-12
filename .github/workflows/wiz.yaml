@@ -18,6 +18,11 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v6
 
+      - name: test
+        run: |
+          ls -la
+          jq . sample.json
+
       # - name: Product id
       #   id: get_product
       #   run: |
