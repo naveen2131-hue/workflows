@@ -1,9 +1,12 @@
 name: Defectdojo - Wiz
 
 on:
+  push:
+    branches:
+      - "**"
 
-  schedule:
-    - cron: '0 8 * * *' 
+  # schedule:
+  #   - cron: '0 8 * * *' 
 
       
 jobs:
@@ -15,122 +18,122 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v6
 
-      - name: Product id
-        id: get_product
-        run: |
-          PROD_ID=$(curl -s -H "Authorization: Token d0cfb7dc99b1f0cc53675c7839e06fb3288ccd04" \
-          http://localhost:8080/api/v2/products/?name="XYZ" \
-          | jq -r '.results[0].id')
+      # - name: Product id
+      #   id: get_product
+      #   run: |
+      #     PROD_ID=$(curl -s -H "Authorization: Token d0cfb7dc99b1f0cc53675c7839e06fb3288ccd04" \
+      #     http://localhost:8080/api/v2/products/?name="XYZ" \
+      #     | jq -r '.results[0].id')
 
-          echo "PROD_ID"=$prod_id >> $GITHUB_ENV
-          echo "Product ID: $PROD_ID" 
+      #     echo "PROD_ID"=$prod_id >> $GITHUB_ENV
+      #     echo "Product ID: $PROD_ID" 
 
-          if [[ "$PROD_ID" =~ ^[0-9]+$ ]]; then 
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
+      #     if [[ "$PROD_ID" =~ ^[0-9]+$ ]]; then 
+      #       echo "exists=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "exists=false" >> $GITHUB_OUTPUT
+      #     fi
 
-      - name: Create Product name
-        if: ${{ steps.get_product.outputs.exists == 'false' }}
-        run: |
-          curl -X POST "http://localhost:8080/api/v2/products/" \
-            -H "Authorization: Token d0cfb7dc99b1f0cc53675c7839e06fb3288ccd04" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "business_criticality": "very high",
-              "platform": "web service",
-              "lifecycle": "construction",
-              "origin": "third party library",
-              "tags": ["string"],
-              "name": "XYZ",
-              "description": "XYZ",
-              "internet_accessible": true,
-              "enable_product_tag_inheritance": true,
-              "enable_full_risk_acceptance": true,
-              "disable_sla_breach_notifications": true,
-              "prod_type": 1,
-              "product_manager": 1,
-              "technical_contact": 1,
-              "team_manager": 1,
-              "sla_configuration": 1,
-              "regulations": [1]
-            }'
+      # - name: Create Product name
+      #   if: ${{ steps.get_product.outputs.exists == 'false' }}
+      #   run: |
+      #     curl -X POST "http://localhost:8080/api/v2/products/" \
+      #       -H "Authorization: Token d0cfb7dc99b1f0cc53675c7839e06fb3288ccd04" \
+      #       -H "Content-Type: application/json" \
+      #       -d '{
+      #         "business_criticality": "very high",
+      #         "platform": "web service",
+      #         "lifecycle": "construction",
+      #         "origin": "third party library",
+      #         "tags": ["string"],
+      #         "name": "XYZ",
+      #         "description": "XYZ",
+      #         "internet_accessible": true,
+      #         "enable_product_tag_inheritance": true,
+      #         "enable_full_risk_acceptance": true,
+      #         "disable_sla_breach_notifications": true,
+      #         "prod_type": 1,
+      #         "product_manager": 1,
+      #         "technical_contact": 1,
+      #         "team_manager": 1,
+      #         "sla_configuration": 1,
+      #         "regulations": [1]
+      #       }'
 
-      - name: Get Token
-        id: get_token
-        run: |
-          RESPONSE=$(curl -sS -X POST "${{ secrets.TOKEN_URL }}" \
-            -H "Content-Type: application/x-www-form-urlencoded" \
-            --data-urlencode "grant_type=client_credentials" \
-            --data-urlencode "audience=wiz-api" \
-            --data-urlencode "client_id=${{ secrets.CLIENT_ID }}" \
-            --data-urlencode "client_secret=${{ secrets.CLIENT_SECRET }}")
+      # - name: Get Token
+      #   id: get_token
+      #   run: |
+      #     RESPONSE=$(curl -sS -X POST "${{ secrets.TOKEN_URL }}" \
+      #       -H "Content-Type: application/x-www-form-urlencoded" \
+      #       --data-urlencode "grant_type=client_credentials" \
+      #       --data-urlencode "audience=wiz-api" \
+      #       --data-urlencode "client_id=${{ secrets.CLIENT_ID }}" \
+      #       --data-urlencode "client_secret=${{ secrets.CLIENT_SECRET }}")
  
-          ACCESS_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
-          echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
+      #     ACCESS_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
+      #     echo "access_token=$ACCESS_TOKEN" >> $GITHUB_OUTPUT
 
-      - name: Query Wiz Issues
-        env:
-          ACCESS_TOKEN: ${{ steps.token.outputs.token }}
-          WIZ_API_URL: ${{ secrets.WIZ_API_URL }}
-        run: |
+      # - name: Query Wiz Issues
+      #   env:
+      #     ACCESS_TOKEN: ${{ steps.token.outputs.token }}
+      #     WIZ_API_URL: ${{ secrets.WIZ_API_URL }}
+      #   run: |
 
-          QUERY='
-          query Issues($first: Int!, $after: String) {
-            issues(first: $first, after: $after) {
-              pageInfo {
-                hasNextPage
-                endCursor
-              }
-              nodes {
-                id
-                title
-                severity
-                status
-                description
-                createdAt
-                updatedAt
-                resolvedAt
-                statusChangedAt
-                reopenedAt
-                dueAt
-                resolution
-                remediationRecommendation
-                ticketUrls
-                note
-                risks
-                threats
-                wizUrl
-                entity {
-                  name
-                  type
-                  region
-                  status
-                  platform
-                  operatingSystem
-                  providerId
-                  cloudProviderURL
-                  subscription {
-                    name
-                  }
-                  project {
-                    name
-                  }
-                }
-              }
-            }
-          }'
+      #     QUERY='
+      #     query Issues($first: Int!, $after: String) {
+      #       issues(first: $first, after: $after) {
+      #         pageInfo {
+      #           hasNextPage
+      #           endCursor
+      #         }
+      #         nodes {
+      #           id
+      #           title
+      #           severity
+      #           status
+      #           description
+      #           createdAt
+      #           updatedAt
+      #           resolvedAt
+      #           statusChangedAt
+      #           reopenedAt
+      #           dueAt
+      #           resolution
+      #           remediationRecommendation
+      #           ticketUrls
+      #           note
+      #           risks
+      #           threats
+      #           wizUrl
+      #           entity {
+      #             name
+      #             type
+      #             region
+      #             status
+      #             platform
+      #             operatingSystem
+      #             providerId
+      #             cloudProviderURL
+      #             subscription {
+      #               name
+      #             }
+      #             project {
+      #               name
+      #             }
+      #           }
+      #         }
+      #       }
+      #     }'
 
-          JSON=$(jq -n \
-            --arg query "$QUERY" \
-            --argjson first 50 \
-            '{query:$query, variables:{first:$first, after:null}}')
+      #     JSON=$(jq -n \
+      #       --arg query "$QUERY" \
+      #       --argjson first 50 \
+      #       '{query:$query, variables:{first:$first, after:null}}')
 
-          curl -sS -X POST "$WIZ_API_URL" \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $ACCESS_TOKEN" \
-            -d "$JSON" > issues.json
+      #     curl -sS -X POST "$WIZ_API_URL" \
+      #       -H "Content-Type: application/json" \
+      #       -H "Authorization: Bearer $ACCESS_TOKEN" \
+      #       -d "$JSON" > issues.json
 
       - name: Convert JSON to CSV
         run: |
@@ -169,36 +172,104 @@ jobs:
           (.data.issues.nodes[] |
           [
           .createdAt,
-          .title,
+          .sourceRules[0].name,
           .severity,
           .status,
           .description,
           .entity.type,
-          .entity.project.name,
+          (.projects | map(.name) | join(";")),
           .resolvedAt,
-          .resolution,
+          .resolutionReason,
           .entity.name,
-          .entity.region,
-          .entity.status,
-          .entity.platform,
-          .entity.operatingSystem,
+          .entity.properties.region,
+          .entity.properties.status,
+          .entity.properties.cloudPlatform,
+          "",
           .id,
-          (.ticketUrls|tostring),
-          .note,
+          (.serviceTickets | tostring),
+          .resolutionNote,
           .dueAt,
-          .remediationRecommendation,
-          .entity.subscription.name,
-          .wizUrl,
-          .entity.cloudProviderURL,
-          .entity.providerId,
-          (.risks|tostring),
-          (.threats|tostring),
+          .sourceRules[0].description,
+          .entity.properties.subscriptionExternalId,
+          .url,
+          .entity.properties.cloudProviderURL,
+          .entity.providerUniqueId,
+          (.sourceRules[0].risks | join(";")),
+          (.sourceRules[0].threats | join(";")),
           .statusChangedAt,
           .updatedAt,
           .reopenedAt
           ])
           | @csv
-          ' issues.json > wiz-issues.csv
+          ' sample.json > wiz-issues.csv
+
+      # - name: Convert JSON to CSV
+      #   run: |
+
+      #     jq -r '
+      #     [
+      #     "Created At",
+      #     "Title",
+      #     "Severity",
+      #     "Status",
+      #     "Description",
+      #     "Resource Type",
+      #     "Project Names",
+      #     "Resolved Time",
+      #     "Resolution",
+      #     "Resource Name",
+      #     "Resource Region",
+      #     "Resource Status",
+      #     "Resource Platform",
+      #     "Resource OS",
+      #     "Issue ID",
+      #     "Ticket URLs",
+      #     "Note",
+      #     "Due At",
+      #     "Remediation Recommendation",
+      #     "Subscription Name",
+      #     "Wiz URL",
+      #     "Cloud Provider URL",
+      #     "Provider ID",
+      #     "Risks",
+      #     "Threats",
+      #     "Status Changed At",
+      #     "Updated At",
+      #     "Reopened At"
+      #     ],
+      #     (.data.issues.nodes[] |
+      #     [
+      #     .createdAt,
+      #     .title,
+      #     .severity,
+      #     .status,
+      #     .description,
+      #     .entity.type,
+      #     .entity.project.name,
+      #     .resolvedAt,
+      #     .resolution,
+      #     .entity.name,
+      #     .entity.region,
+      #     .entity.status,
+      #     .entity.platform,
+      #     .entity.operatingSystem,
+      #     .id,
+      #     (.ticketUrls|tostring),
+      #     .note,
+      #     .dueAt,
+      #     .remediationRecommendation,
+      #     .entity.subscription.name,
+      #     .wizUrl,
+      #     .entity.cloudProviderURL,
+      #     .entity.providerId,
+      #     (.risks|tostring),
+      #     (.threats|tostring),
+      #     .statusChangedAt,
+      #     .updatedAt,
+      #     .reopenedAt
+      #     ])
+      #     | @csv
+      #     ' issues.json > wiz-issues.csv
 
       - name: Upload CSV Artifact
         uses: actions/upload-artifact@v4
@@ -206,18 +277,18 @@ jobs:
           name: wiz-issues
           path: wiz-issues.csv
 
-      - name: Wiz reports Upload to DD
-        run: |
-          curl -X POST "http://localhost:8080/api/v2/reimport-scan/" \
-            -H "Authorization: Token d0cfb7dc99b1f0cc53675c7839e06fb3288ccd04" \
-            -H "Accept: application/json" \
-            -H "Content-Type: multipart/form-data" \
-            -F "scan_type=Wiz Scan" \
-            -F "file=@wiz-issues.csv" \
-            -F "engagement_name=test" \
-            -F "active=true" \
-            -F "verified=true" \
-            -F "product_name=XYZ" \
-            -F "minimum_severity=Low" \
-            -F "auto_create_context=true" \
-            -F "close_old_findings=true"
+      # - name: Wiz reports Upload to DD
+      #   run: |
+      #     curl -X POST "http://localhost:8080/api/v2/reimport-scan/" \
+      #       -H "Authorization: Token d0cfb7dc99b1f0cc53675c7839e06fb3288ccd04" \
+      #       -H "Accept: application/json" \
+      #       -H "Content-Type: multipart/form-data" \
+      #       -F "scan_type=Wiz Scan" \
+      #       -F "file=@wiz-issues.csv" \
+      #       -F "engagement_name=test" \
+      #       -F "active=true" \
+      #       -F "verified=true" \
+      #       -F "product_name=XYZ" \
+      #       -F "minimum_severity=Low" \
+      #       -F "auto_create_context=true" \
+      #       -F "close_old_findings=true"
