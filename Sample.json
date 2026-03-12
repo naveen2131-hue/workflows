@@ -1,0 +1,324 @@
+{
+    "data": {
+        "issues": {
+            "pageInfo": {
+                "hasNextPage": true,
+                "endCursor": "REDACTED"
+            },
+            "nodes": [
+                {
+                    "id": "REDACTED",
+                    "severity": "MEDIUM",
+                    "status": "OPEN",
+                    "type": "TOXIC_COMBINATION",
+                    "createdAt": "2022-10-20T18:54:35.806987Z",
+                    "updatedAt": "2026-03-12T03:45:29.501721Z",
+                    "resolvedAt": null,
+                    "reopenedAt": "2024-03-28T01:30:48.616365Z",
+                    "statusChangedAt": "2024-03-28T01:30:48.616365Z",
+                    "dueAt": null,
+                    "description": "This S3 bucket object-level read data events are not logged.\n\nEnabling CloudTrail data events logging can assist in meeting data compliance requirements, performing comprehensive security analysis, monitoring specific patterns of user behavior within the AWS account, or taking immediate actions on any object-level activity.",
+                    "resolutionReason": null,
+                    "resolutionNote": null,
+                    "url": "REDACTED",
+                    "environments": [
+                        "PRODUCTION"
+                    ],
+                    "validatedAsExploitable": false,
+                    "hasCodeRemediation": false,
+                    "sourceRules": [
+                        {
+                            "id": "REDACTED",
+                            "name": "S3 Bucket with object-level read data events logging disabled",
+                            "description": "This S3 bucket object-level read data events are not logged.\n\nEnabling CloudTrail data events logging can assist in meeting data compliance requirements, performing comprehensive security analysis, monitoring specific patterns of user behavior within the AWS account, or taking immediate actions on any object-level activity.",
+                            "risks": [
+                                "UNPROTECTED_DATA",
+                                "RELIABILITY_IMPACT"
+                            ],
+                            "threats": []
+                        }
+                    ],
+                    "entity": {
+                        "id": "REDACTED",
+                        "name": "glofox-bitbucket-archive",
+                        "type": "BUCKET",
+                        "providerUniqueId": "REDACTED",
+                        "properties": {
+                            "_productIDs": "REDACTED",
+                            "_vertexID": "REDACTED",
+                            "accessibleFrom.internet": false,
+                            "atRestEncryption": true,
+                            "cloudPlatform": "AWS",
+                            "cloudProviderURL": "REDACTED",
+                            "creationDate": "2020-09-23T12:06:31Z",
+                            "deploymentCoverage_cloudEvents_deploymentStatus": "NotInstalled",
+                            "deploymentCoverage_cloudEvents_isLastSeenInTheLastDay": false,
+                            "deploymentCoverage_cloudEvents_isLastSeenInTheLastWeek": false,
+                            "encrypted": true,
+                            "encryptedAtRest": true,
+                            "encryptionAlgorithm": null,
+                            "encryptionAlgorithms": "REDACTED",
+                            "encryptionInTransit": false,
+                            "externalId": "glofox-bitbucket-archive",
+                            "fullResourceName": null,
+                            "hasSensitiveData": false,
+                            "isPublic": false,
+                            "isUsedOnPrem": false,
+                            "loggingEnabled": false,
+                            "maxExposureLevel": 0,
+                            "name": "glofox-bitbucket-archive",
+                            "nativeType": "bucket",
+                            "numAddressesOpenForHTTP": 0,
+                            "numAddressesOpenForHTTPS": 0,
+                            "numAddressesOpenForNonStandardPorts": 0,
+                            "numAddressesOpenForRDP": 0,
+                            "numAddressesOpenForSSH": 0,
+                            "numAddressesOpenForWINRM": 0,
+                            "openToAllInternet": false,
+                            "openToEntireInternet": false,
+                            "providerUniqueId": "REDACTED",
+                            "publicExposure": "PublicExposureInvalid",
+                            "region": "REDACTED",
+                            "regionLocation": "IE",
+                            "regionType": "BucketRegionTypeMultiRegion",
+                            "resourceGroupExternalId": null,
+                            "retentionPeriod": 0,
+                            "sizeBytes": 2378888289,
+                            "sizeGiB": 2,
+                            "status": "Active",
+                            "subscriptionExternalId": "REDACTED",
+                            "updatedAt": "2026-02-25T20:14:35Z",
+                            "versioningEnabled": false,
+                            "webHostingEnabled": false,
+                            "zone": null
+                        },
+                        "providerData": {
+                            "BucketArn": "REDACTED",
+                            "BucketRegion": "REDACTED",
+                            "CreationDate": "2020-09-23T12:06:31Z",
+                            "Name": "glofox-bitbucket-archive",
+                            "WizMetadata": {
+                                "accountId": "REDACTED",
+                                "externalId": "glofox-bitbucket-archive",
+                                "nativeType": "bucket",
+                                "objectFetchStatus": {
+                                    "GetObjectLockConfiguration": {
+                                        "apiCall": "GetObjectLockConfiguration",
+                                        "permission": "s3:GetObjectLockConfiguration",
+                                        "result": "Success"
+                                    },
+                                    "accountPublicAccessBlockConfiguration": {
+                                        "apiCall": "GetAccountPublicAccessBlock",
+                                        "permission": "s3:GetAccountPublicAccessBlock",
+                                        "result": "Success"
+                                    },
+                                    "bucketAccelerateConfiguration": {
+                                        "apiCall": "GetBucketAccelerateConfiguration",
+                                        "permission": "s3:GetBucketAccelerateConfiguration",
+                                        "result": "Success"
+                                    },
+                                    "bucketAcl": {
+                                        "apiCall": "GetBucketAcl",
+                                        "permission": "s3:GetBucketAcl",
+                                        "result": "Success"
+                                    },
+                                    "bucketCors": {
+                                        "apiCall": "GetBucketCors",
+                                        "permission": "s3:GetBucketCors",
+                                        "result": "Success"
+                                    },
+                                    "bucketEncryptionConfiguration": {
+                                        "apiCall": "GetEncryptionConfiguration",
+                                        "permission": "s3:GetEncryptionConfiguration",
+                                        "result": "Success"
+                                    },
+                                    "bucketLifecycleConfiguration": {
+                                        "apiCall": "GetLifecycleConfiguration",
+                                        "permission": "s3:GetLifecycleConfiguration",
+                                        "result": "Success"
+                                    },
+                                    "bucketLocation": {
+                                        "apiCall": "GetBucketLocation",
+                                        "permission": "s3:GetBucketLocation",
+                                        "result": "Success"
+                                    },
+                                    "bucketLogging": {
+                                        "apiCall": "GetBucketLogging",
+                                        "permission": "s3:GetBucketLogging",
+                                        "result": "Success"
+                                    },
+                                    "bucketNotificationConfiguration": {
+                                        "apiCall": "GetBucketNotificationConfiguration",
+                                        "permission": "s3:GetBucketNotification",
+                                        "result": "Success"
+                                    },
+                                    "bucketObjectLockConfiguration": {
+                                        "apiCall": "GetBucketObjectLockConfiguration",
+                                        "permission": "s3:GetBucketObjectLockConfiguration",
+                                        "result": "Success"
+                                    },
+                                    "bucketOwnershipControls": {
+                                        "apiCall": "GetBucketOwnershipControls",
+                                        "permission": "s3:GetBucketOwnershipControls",
+                                        "result": "Success"
+                                    },
+                                    "bucketPolicy": {
+                                        "apiCall": "GetBucketPolicy",
+                                        "permission": "s3:GetBucketPolicy",
+                                        "result": "Success"
+                                    },
+                                    "bucketPolicyStatus": {
+                                        "apiCall": "GetBucketPolicyStatus",
+                                        "permission": "s3:GetBucketPolicyStatus",
+                                        "result": "Success"
+                                    },
+                                    "bucketPublicAccessBlock": {
+                                        "apiCall": "GetBucketPublicAccessBlock",
+                                        "permission": "s3:GetBucketPublicAccessBlock",
+                                        "result": "Success"
+                                    },
+                                    "bucketReplication": {
+                                        "apiCall": "GetBucketReplication",
+                                        "permission": "s3:GetBucketReplication",
+                                        "result": "Success"
+                                    },
+                                    "bucketTags": {
+                                        "apiCall": "GetBucketTagging",
+                                        "permission": "s3:GetBucketTagging",
+                                        "result": "Success"
+                                    },
+                                    "bucketVersioning": {
+                                        "apiCall": "GetBucketVersioning",
+                                        "permission": "s3:GetBucketVersioning",
+                                        "result": "Success"
+                                    },
+                                    "bucketWebsite": {
+                                        "apiCall": "GetBucketWebsite",
+                                        "permission": "s3:GetBucketWebsite",
+                                        "result": "Success"
+                                    },
+                                    "intelligentTieringConfigurations": {
+                                        "apiCall": "ListBucketIntelligentTieringConfigurations",
+                                        "errorDetails": "Error fetching intelligent tiering configurations",
+                                        "errorType": "ErrorResultTypeMissingPermissionError",
+                                        "permission": "s3:GetIntelligentTieringConfiguration",
+                                        "result": "Error"
+                                    },
+                                    "inventoryConfigurations": {
+                                        "apiCall": "ListBucketInventoryConfigurations",
+                                        "permission": "s3:ListBucketInventoryConfigurations",
+                                        "result": "Success"
+                                    },
+                                    "metricsConfiguration": {
+                                        "apiCall": "ListBucketMetricsConfigurations",
+                                        "permission": "s3:GetMetricsConfiguration",
+                                        "result": "Success"
+                                    },
+                                    "requestPayment": {
+                                        "apiCall": "GetBucketRequestPayment",
+                                        "permission": "s3:GetBucketRequestPayment",
+                                        "result": "Success"
+                                    }
+                                },
+                                "region": "REDACTED"
+                            },
+                            "accountPublicAccessBlockConfiguration": null,
+                            "bucketAccelerateConfiguration": {
+                                "RequestCharged": "",
+                                "ResultMetadata": {},
+                                "Status": ""
+                            },
+                            "bucketAcl": {
+                                "Grants": [
+                                    {
+                                        "Grantee": {
+                                            "DisplayName": null,
+                                            "EmailAddress": null,
+                                            "ID": "REDACTED",
+                                            "Type": "CanonicalUser",
+                                            "URI": null
+                                        },
+                                        "Permission": "FULL_CONTROL"
+                                    }
+                                ],
+                                "Owner": {
+                                    "DisplayName": null,
+                                    "ID": "REDACTED"
+                                },
+                                "ResultMetadata": {}
+                            },
+                            "bucketCors": null,
+                            "bucketEncryptionConfiguration": {
+                                "ResultMetadata": {},
+                                "ServerSideEncryptionConfiguration": {
+                                    "Rules": [
+                                        {
+                                            "ApplyServerSideEncryptionByDefault": {
+                                                "KMSMasterKeyID": null,
+                                                "SSEAlgorithm": "REDACTED"
+                                            },
+                                            "BlockedEncryptionTypes": null,
+                                            "BucketKeyEnabled": false
+                                        }
+                                    ]
+                                }
+                            },
+                            "bucketLifecycleConfiguration": null,
+                            "bucketLocation": {
+                                "LocationConstraint": "REDACTED",
+                                "ResultMetadata": {}
+                            },
+                            "bucketLogging": {
+                                "LoggingEnabled": null,
+                                "ResultMetadata": {}
+                            },
+                            "bucketNotificationConfiguration": {
+                                "EventBridgeConfiguration": null,
+                                "LambdaFunctionConfigurations": null,
+                                "QueueConfigurations": null,
+                                "ResultMetadata": {},
+                                "TopicConfigurations": null
+                            },
+                            "bucketObjectLockConfiguration": null,
+                            "bucketOwnershipControls": null,
+                            "bucketPolicy": null,
+                            "bucketPolicyStatus": null,
+                            "bucketPublicAccessBlock": {
+                                "PublicAccessBlockConfiguration": {
+                                    "BlockPublicAcls": true,
+                                    "BlockPublicPolicy": true,
+                                    "IgnorePublicAcls": true,
+                                    "RestrictPublicBuckets": true
+                                },
+                                "ResultMetadata": {}
+                            },
+                            "bucketReplication": null,
+                            "bucketTags": null,
+                            "bucketVersioning": {
+                                "MFADelete": "",
+                                "ResultMetadata": {},
+                                "Status": ""
+                            },
+                            "bucketWebsite": null,
+                            "intelligentTieringConfigurations": null,
+                            "inventoryConfigurations": null,
+                            "metricsConfiguration": null,
+                            "requestPayment": {
+                                "Payer": "BucketOwner",
+                                "ResultMetadata": {}
+                            }
+                        },
+                        "originalObject": {
+                            "BucketArn": "REDACTED",
+                            "BucketRegion": "REDACTED",
+                            "CreationDate": "2020-09-23T12:06:31Z",
+                            "Name": "glofox-bitbucket-archive"
+                        }
+                    },
+                    "projects": [
+                        {
+                            "name": "Glofox AWS"
+                        }
+                    ],
+                    "serviceTickets": null
+                },
